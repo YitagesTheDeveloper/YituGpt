@@ -1,0 +1,45 @@
+import React, { useState } from 'react'
+import Sidebar from './components/Sidebar'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import ChatBox from './components/ChatBox'
+import Credits from './pages/Credits'
+import Community from './pages/Community'
+import { assets } from './assets/assets'
+import './assets/prism.css'
+import Loading from './pages/Loading'
+import Login from './pages/Login'
+import { useAppContext } from './context/AppContext'
+
+const App = () => {
+  const [isMenuOpen,setIsMenuOpen] = useState(false);
+  const {pathname} = useLocation()
+  const {user} = useAppContext()
+
+  if(pathname === '/loading') return <Loading/>
+  return (
+    <>
+    {!isMenuOpen && <img src={assets.menu_icon} onClick={()=>setIsMenuOpen(true)} className='absolute w-8 h-8 cursor-pointer top-3 left-3 md:hidden not-dark:invert'/>}
+    
+    {user ? (
+
+      <div className='min-h-screen w-screen bg-linear-to-b from-white to-[#f2f2f2] dark:from-[#242124] dark:to-black text-black dark:text-white transition-colors duration-300'>
+        <div className='flex w-screen h-screen'>
+          <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}/>
+          <Routes>
+            <Route path='/' element={<ChatBox/>}/>
+            <Route path='/credits' element={<Credits/>}/>
+            <Route path='/community' element={<Community/>}/>
+          </Routes>
+        </div>
+      </div>
+      ):(
+      <div className='bg-gradient-to-b from-[#242124] to-[#000000] flex items-center justify-center h-screen w-screen'>
+        <Login/>
+      </div>
+      )
+      }
+    </>
+  )
+}
+
+export default App
