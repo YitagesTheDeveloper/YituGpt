@@ -5,7 +5,8 @@ import { dummyChats, dummyUserData } from '../assets/assets'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
+const backendUrl = import.meta.env.VITE_SERVER_URL
+axios.defaults.baseURL = window.location.protocol === 'https:' ? backendUrl.replace('http://', 'https://') : backendUrl;
 
 
 const AppContext = createContext()
